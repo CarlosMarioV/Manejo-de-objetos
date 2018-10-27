@@ -2,15 +2,10 @@ package Vista;
 
 import Controlador.ControladorPrincipal;
 import Controlador.Inicio;
-import Modelo.Mario;
+import Modelo.Personaje;
 import Modelo.Tuberia;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+
 import javax.swing.JLabel;
-import javax.swing.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,7 +34,7 @@ public class Mapa extends javax.swing.JFrame {
         this.controlador = controlador;
     }
     
-    public void AgregaLeucosito(Mario leucosito)
+    public void AgregaLeucosito(Personaje leucosito)
     {
         this.add(leucosito.getCuerpo());
     }
@@ -106,7 +101,7 @@ public class Mapa extends javax.swing.JFrame {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         //this.controlador.moverConBloque(evt);
-        this.add(this.controlador.getLeucosito().getCuerpo());
+        this.add(this.controlador.getPersonaje().getCuerpo());
         this.controlador.pintar();
         this.repaint(); 
     }//GEN-LAST:event_formKeyPressed

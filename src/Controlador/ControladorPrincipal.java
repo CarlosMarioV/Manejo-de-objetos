@@ -5,24 +5,20 @@
  */
 package Controlador;
 
-import Modelo.Bloques;
-import Modelo.Camino;
-import Modelo.Mario;
-import Modelo.Objetos;
-import Modelo.Paredes;
-import Modelo.Tuberia;
+import Modelo.*;
 import Vista.Mapa;
-import java.applet.AudioClip;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  *
@@ -30,7 +26,7 @@ import javax.swing.Timer;
  */
 public class ControladorPrincipal 
 {
-    private Mario leucosito;
+    private Personaje leucosito;
     private Mapa mapa;
     private Objetos[][] matrizLogica;
     private Timer tiempo;
@@ -78,11 +74,12 @@ public class ControladorPrincipal
     {
         musicaClasica.loop(Clip.LOOP_CONTINUOUSLY);
     }
+
     /**
      * Agrega el personaje en el mapa y en la matriz grafica.
      * @param leucosito 
      */
-    public void setLeucosito(Mario leucosito,int fila,int columna) 
+    public void setPersonaje(Personaje leucosito, int fila, int columna)
     {
         this.leucosito = leucosito;
         this.matrizLogica[fila][columna] = leucosito;
@@ -95,53 +92,49 @@ public class ControladorPrincipal
         this.mapa.AgregarTuberia(tuberia);
     }
     /**
+
      * Retorna el personaje...
      * @return 
      */
-    public Mario getLeucosito() {
+    public Personaje getPersonaje() {
         return leucosito;
     }
-    
-    /**
-     * Crea el mapa, en la matrizLogica
-     * else
-                {
-                    int x = (int) (Math.random()*20);
-                    if(i == 10 && j == 25)
-                    {
-                        Camino camino = new Camino(i,j);
-                        this.matrizLogica[i][j] = camino;
-                        fila += camino.getID()+ ", ";
-                    }
-                    
-                   else if((x>10)&&(i%2 == 0)&&(j%2==0))
-                   {
-                        if(this.matrizLogica[i][j] == null)
-                        {
-                            Bloques bloque = new Bloques(i,j,this.Mundo);
-                            this.matrizLogica[i][j] = bloque;
-                            fila += bloque.getID()+ ",";
-                        } 
-                   }
-                   else if(x>10)
-                    {
-                        if(this.matrizLogica[i][j] == null)
-                        {
-                            Paredes pared = new Paredes(i,j,this.Mundo);
-                            this.matrizLogica[i][j] = pared;
-                            fila += pared.getID()+ ", ";
-                        }    
-                   }
-                   else
-                   {
-                        Camino camino = new Camino(i,j);
-                        this.matrizLogica[i][j] = camino;
-                        fila += camino.getID()+ ", ";
-                   }
+
+
+    public void crearMatrizPorArchivo(String rutaArchivo) throws IOException {
+
+        String cadena;
+        FileReader f = new FileReader(new File(rutaArchivo));
+        BufferedReader b = new BufferedReader(f);
+        int fila = 0;
+        while((cadena = b.readLine())!=null) {
+            //char[] tipo = cadena.toCharArray();
+            for (int columna =0; columna < cadena.length(); columna++) {
+                char c = cadena.charAt(columna);
+                switch(c){
+                    case('0'):
+                        Paredes pared = new Paredes(fila,columna,this.Mundo);
+                        this.matrizLogica[fila][columna] = pared;
+                        break;
+                    case('1'):
+                        Camino camino = new Camino(fila,columna);
+                        this.matrizLogica[fila][columna] = camino;
+                        break;
+                    case('k'):
+                        Llave llave = new Llave(fila,columna, this.Mundo);
+                        this.matrizLogica[fila][columna] = llave;
+                        break;
+                     default:
+                         System.out.print(c);
                 }
-     */
-    public void crearTodaMatriz()
-    {
+            }
+            System.out.println("");
+            fila++;
+        }
+        b.close();
+    }
+
+    public void crearTodaMatriz() {
         for(int i = 0;i<13;i++)
         {
             for(int j = 0;j<27;j++)
@@ -246,7 +239,7 @@ public class ControladorPrincipal
             for(int j = 0;j<27;j++)
             {
                 if(this.matrizLogica[i][j].getID().equals("P")||this.matrizLogica[i][j].getID().equals("T")
-                        || this.matrizLogica[i][j].getID().equals("PD"))
+                        || this.matrizLogica[i][j].getID().equals("PD")||this.matrizLogica[i][j].getID().equals("k"))
                 {mapa.AgregaPared(this.matrizLogica[i][j].getObjeto()); }
             }  
     }
@@ -261,10 +254,10 @@ public class ControladorPrincipal
         if(FinJuego.equals(true)){this.musicaClasica.stop();}
     }
 
-    public void insertarMusica(String path) {
+    public void insertarMusica(String ruta) {
         try {
             this.musicaClasica = AudioSystem.getClip();
-            this.musicaClasica.open(AudioSystem.getAudioInputStream(getClass().getResource(path))); //new File()
+            this.musicaClasica.open(AudioSystem.getAudioInputStream(getClass().getResource(ruta))); //new File()
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {

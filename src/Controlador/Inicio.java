@@ -1,59 +1,65 @@
 package Controlador;
 
-
-import Modelo.Mario;
-import Modelo.Tuberia;
+import Modelo.Personaje;
 import Vista.Mapa;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.IOException;
 
 /**
- *  test
+ * Esta clase es la que inicia el juego.Inserta los objetos dentro del mapa e inserta el mapa en el controlador
  * @author Carlos Mario
  */
 public class Inicio {
-    
-    private Mapa mapa; 
-    private Mario leucosito;
+
+    private Personaje personaje;
     private ControladorPrincipal controlador;
 
+    /*
+    * Constructor vacio.
+    * */
     public Inicio() {
+
     }
-    
-    public void iniciar(String Mundo)
-    {
-        this.leucosito = new Mario(1,11);
-        this.mapa = new Mapa();
+
+    /**
+     * Metodo, recibe el nombre del mundo que se va a pintar.
+     * @param Mundo
+     */
+    public void iniciar(String Mundo) {
+
+        this.personaje = new Personaje(1,11);
+        Mapa mapa = new Mapa();
         this.controlador = new ControladorPrincipal(Mundo);
-        
-        
+
+
         /**
          * Se agrega el personaje y el mapa al controlador
          */
-        this.controlador.setLeucosito(leucosito,11,1);
+        this.controlador.setPersonaje(personaje,11,1);
         this.controlador.setMapa(mapa);
         
         /**
          * Se agrega al mapa el controlador
          */
-        this.mapa.setControlador(controlador);
-        this.mapa.AgregaLeucosito(leucosito);
+        mapa.setControlador(controlador);
+        mapa.AgregaLeucosito(personaje);
         
         /**
          * Se agrega la figura del nimbus a la ventana y el controlador crea la matriz
          * luego pinta lo que en la matriz logica en la grafica...
          */
         AgregaElNimbus();
-        this.controlador.crearTodaMatriz();
+        //this.controlador.crearTodaMatriz();
+        try {
+            this.controlador.crearMatrizPorArchivo("src/Mapas/mundo1.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.controlador.setTuberia(11,25);
         this.controlador.pintar();
         
         this.controlador.musica();
-        this.mapa.setVisible(true);
+        mapa.setVisible(true);
     }
     
     public void AgregaElNimbus()

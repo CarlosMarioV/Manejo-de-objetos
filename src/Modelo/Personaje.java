@@ -2,29 +2,24 @@ package Modelo;
 
 
 import Controlador.ControladorPrincipal;
-import Controlador.Inicio;
+
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
+ * This class contain the method for the character, the moves and other.
  * @author Carlos Mario
  */
-public class Mario extends Objetos
+public class Personaje extends Objetos
 {
     private JLabel cuerpo = new JLabel(); 
     private int x,y,columna,fila;
     
     
 
-    public Mario(int columna,int fila) {
+    public Personaje(int columna, int fila) {
         super("L");
         this.cuerpo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mario2.gif")));
         this.x = columna*50;//x1;//Posicion en la ventana eje X, Columna my 
