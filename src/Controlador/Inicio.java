@@ -12,7 +12,7 @@ import Vista.Mapa;
  */
 
 /**
- *
+ *  test
  * @author Carlos Mario
  */
 public class Inicio {
