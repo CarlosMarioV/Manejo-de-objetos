@@ -16,6 +16,11 @@ import java.applet.AudioClip;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
@@ -29,7 +34,8 @@ public class ControladorPrincipal
     private Mapa mapa;
     private Objetos[][] matrizLogica;
     private Timer tiempo;
-    private AudioClip musicaClasica;
+    private AudioSystem sonido;
+    private Clip musicaClasica;
     private String Mundo;
     public static Boolean FinJuego;
     
@@ -40,11 +46,11 @@ public class ControladorPrincipal
         this.Mundo = Mundo;
         switch (Mundo) {
             case "Mundo1":
-                musicaClasica = java.applet.Applet.newAudioClip(getClass().getResource("/Musica/SuperMarioClasico.wav"));
+                this.insertarMusica("/Musica/SuperMarioClasico.wav");
                 break;
             case "Mundo2":
-                musicaClasica = java.applet.Applet.newAudioClip(getClass().getResource("/Musica/Debajo.wav"));
-                break;} 
+                this.insertarMusica("/Musica/Debajo.wav");
+                break;}
     }
     
     public void IniciarTiempo()
@@ -70,7 +76,7 @@ public class ControladorPrincipal
     
     public void musica()
     {
-        musicaClasica.loop();
+        musicaClasica.loop(Clip.LOOP_CONTINUOUSLY);
     }
     /**
      * Agrega el personaje en el mapa y en la matriz grafica.
@@ -253,5 +259,18 @@ public class ControladorPrincipal
         //this.leucosito.mover(movimiento,this.matrizLogica);
         this.leucosito.moverConBloque(movimiento,this.matrizLogica);
         if(FinJuego.equals(true)){this.musicaClasica.stop();}
+    }
+
+    public void insertarMusica(String path) {
+        try {
+            this.musicaClasica = AudioSystem.getClip();
+            this.musicaClasica.open(AudioSystem.getAudioInputStream(getClass().getResource(path))); //new File()
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
