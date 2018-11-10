@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package juego.modelos;
+
+import juego.util.Util;
 
 /**
  *
@@ -12,19 +14,17 @@ package Modelo;
 public class Camino extends Objetos 
 
 {
-    private String ID = "C";
+    private Character ID = Util.CAMINO;
     private int x,y;
     
     public Camino(int x,int y) 
     {
-        super("C");
+        super(Util.CAMINO);
         this.x = x;
         this.y = y;
     }
 
-    public String getID() {
-        return ID;
-    }
-    
-    
+    //public String getID() {
+      //  return ID;
+    //}
 }

@@ -1,7 +1,9 @@
-package Controlador;
+package juego;
 
-import Modelo.Personaje;
-import Vista.Mapa;
+import juego.controlador.ControladorPrincipal;
+import juego.modelos.Personaje;
+import juego.util.Util;
+import juego.vistas.Mapa;
 
 import java.io.IOException;
 
@@ -11,15 +13,14 @@ import java.io.IOException;
  */
 public class Inicio {
 
-    private Personaje personaje;
-    private ControladorPrincipal controlador;
+    private Personaje personaje;                //Instancia del personaje principal.
+    private ControladorPrincipal controlador;   //Instancia del controlador.
+    private Mapa mapa;                          //Instancia de la ventana.
+    private Thread ventana;                     //Hilo de la ventana.
 
-    /*
-    * Constructor vacio.
-    * */
-    public Inicio() {
 
-    }
+
+    public Inicio() {}
 
     /**
      * Metodo, recibe el nombre del mundo que se va a pintar.
@@ -28,8 +29,9 @@ public class Inicio {
     public void iniciar(String Mundo) {
 
         this.personaje = new Personaje(1,11);
-        Mapa mapa = new Mapa();
         this.controlador = new ControladorPrincipal(Mundo);
+        this.mapa = new Mapa();
+
 
 
         /**
@@ -42,28 +44,28 @@ public class Inicio {
          * Se agrega al mapa el controlador
          */
         mapa.setControlador(controlador);
-        mapa.AgregaLeucosito(personaje);
+        mapa.setPersonaje(personaje);
         
         /**
          * Se agrega la figura del nimbus a la ventana y el controlador crea la matriz
          * luego pinta lo que en la matriz logica en la grafica...
          */
         AgregaElNimbus();
-        //this.controlador.crearTodaMatriz();
         try {
-            this.controlador.crearMatrizPorArchivo("src/Mapas/mundo1.txt");
+            this.controlador.crearMatrizPorArchivo(Util.rutaMapas + "mundo1.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.controlador.encenderHilos();
         this.controlador.setTuberia(11,25);
         this.controlador.pintar();
-        
         this.controlador.musica();
         mapa.setVisible(true);
+        mapa.setTextoConsola("Bienvenido...\n Este es el mundo de vectoriano, consigue las piesas que necesites " +
+                "para avanzar al siguiente mundo, deberas encontrar las pistas para conseguirlo.");
     }
     
-    public void AgregaElNimbus()
-    {
+    public void AgregaElNimbus() {
        try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

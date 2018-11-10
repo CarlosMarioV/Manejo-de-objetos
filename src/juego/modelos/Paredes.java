@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package juego.modelos;
+
+import juego.util.Util;
 
 import javax.swing.JLabel;
 
@@ -15,21 +17,23 @@ public class Paredes extends Objetos
 {
 
     public JLabel pared;
-    private String ID = "P";
+    //private String ID = "P";
      
     public Paredes(int fila,int columna,String Mundo) 
     {
-        super("P");
+        super(Util.PARED);
         this.pared = new JLabel();
-        this.pared.setBounds(columna*50,fila*48,50,50);
+         this.pared.setBounds(columna*50,fila*48,50,50);
         
         this.objeto = pared;
         switch (Mundo) {
             case "Mundo1":
-                this.pared.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Mundo1/BloqueIndestructiblesMundo13D.jpg")));
+                this.pared.setIcon(new javax.swing.ImageIcon("src/juego/img/mundo1/" +
+                        "BloqueIndestructiblesMundo13D.jpg"));//
                 break;
             case "Mundo2":
-                this.pared.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Mundo2/BloqueIndestructiblesMundo.jpg")));
+                this.pared.setIcon(new javax.swing.ImageIcon(getClass().getResource("src/juego/img/mundo2/" +
+                        "BloqueIndestructiblesMundo.jpg")));
                 break;}
     }
 
@@ -37,8 +41,8 @@ public class Paredes extends Objetos
         return pared;
     }
 
-    @Override
-    public String getID() {
-        return ID;
-    }
+    //@Override
+    //public Character getID() {
+    //    return ID;
+    //}
 }

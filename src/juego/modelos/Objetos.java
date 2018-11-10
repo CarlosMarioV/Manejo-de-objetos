@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package juego.modelos;
 
 import javax.swing.JLabel;
+import java.awt.*;
 
 /**
  *
  * @author Carlos Mario
  */
-public class Objetos 
-{
+public abstract class Objetos {
     private int x,y;
-    private String ID;
+    private Character ID;
     public JLabel objeto;
     public int tamañoX,tamañoY;
+
+    public Image img;
     
     public Objetos(int x, int y)
     {
@@ -24,7 +26,7 @@ public class Objetos
         this.y = y;
     }
 
-    public Objetos(String ID) {
+    public Objetos(Character ID) {
         this.ID = ID;
     }
 
@@ -32,7 +34,7 @@ public class Objetos
         return objeto;
     }
 
-    public String getID() {
+    public Character getID() {
         return ID;
     }
     
@@ -40,4 +42,5 @@ public class Objetos
     {
         objeto.setLocation(columna*tamañoX, fila*tamañoY);
     }
+
 }
